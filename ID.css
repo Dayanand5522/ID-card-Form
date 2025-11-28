@@ -1,4 +1,4 @@
-*,
+
 *:before,
 *:after{
     padding: 0;
@@ -118,5 +118,6 @@ button{
 }
 .gender-category lable, .gender-category input{
     cursor: pointer;
+
 
 }

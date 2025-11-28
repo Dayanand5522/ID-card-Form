@@ -1,0 +1,86 @@
+<?php
+// Database connection
+$conn = mysqli_connect("localhost", "root", "", "student_info");
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Capture form inputs
+$Name = $_POST['Name'];
+$Address = $_POST['Address'];
+$Branch = $_POST['Branch']; // Department name (e.g., 'CSE', 'ECE')
+$DOB = $_POST['DOB'];
+$Reg_No = $_POST['Reg_No'];
+$Mobile = $_POST['Mobile'];
+$Gender = $_POST['Gender'];
+
+// Sanitize department name to avoid SQL injection
+$Branch = mysqli_real_escape_string($conn, $Branch);
+
+// Handle photo upload
+if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] == UPLOAD_ERR_OK) {
+    // Directory to store uploaded photos
+    $targetDir = "uploads/";
+
+    // Create 'uploads' directory if it doesn't exist
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true); // Make directory with full permissions
+    }
+
+    $Photo = $_FILES['Photo']['name']; // Get the file name
+    $targetFile = $targetDir . basename($Photo); // Set the target file path
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); // Get file extension
+
+    // Validate file type (allow jpg, jpeg, png, gif)
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+    if (!in_array($imageFileType, $allowedTypes)) {
+        die("Error: Only JPG, JPEG, PNG, and GIF files are allowed.");
+    }
+
+    // Move uploaded file to the server
+    if (!move_uploaded_file($_FILES['Photo']['tmp_name'], $targetFile)) {
+        die("Error uploading file. Please try again.");
+    }
+} else {
+    die("Error: No file uploaded or file upload error. Error code: " . $_FILES['Photo']['error']);
+}
+
+// Check if the table for the department exists
+$table_name = $Branch;
+$check_table = "SHOW TABLES LIKE '$table_name'";
+$result = mysqli_query($conn, $check_table);
+
+if (mysqli_num_rows($result) == 0) {
+    // If the table doesn't exist, create it dynamically
+    $create_table = "CREATE TABLE $table_name (
+        StudentID INT AUTO_INCREMENT PRIMARY KEY,
+        Name VARCHAR(255) NOT NULL,
+        Address VARCHAR(255),
+        DOB DATE,
+        Reg_No VARCHAR(50),
+        Mobile VARCHAR(15),
+        Gender VARCHAR(10),
+        Photo VARCHAR(255)
+    )";
+    
+    if (!mysqli_query($conn, $create_table)) {
+        die("Error creating table: " . mysqli_error($conn));
+    }
+}
+
+// Insert data into the department-specific table
+$insert_data = "INSERT INTO $table_name (Name, Address, DOB, Reg_No, Mobile, Gender, Photo) 
+                VALUES ('$Name', '$Address', '$DOB', '$Reg_No', '$Mobile', '$Gender', '$targetFile')";
+
+if (mysqli_query($conn, $insert_data)) {
+    echo "Data inserted successfully into $table_name!<br>";
+    echo "Uploaded Photo:<br><img src='$targetFile' alt='Uploaded Photo' style='max-width:300px;'>";
+} else {
+    echo "Error inserting data: " . mysqli_error($conn);
+}
+
+// Close the connection
+mysqli_close($conn);
+?>

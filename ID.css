@@ -1,0 +1,122 @@
+*,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "serif";
+    font-weight: 500;
+
+}
+body{
+    
+  height: 100vh;
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    
+}
+.container{
+    background-color:#ffffff ;
+    width: 75%;
+    min-width: 420px;
+    padding: 35px 50px;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 10px;
+    
+
+}
+h1{
+    font-size: 50px;
+    text-align: center;
+    color: rgb(8, 92, 107);
+}
+p{
+    position: relative;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    color: #606060;
+    font-size: 24px;
+    font-weight: 400;
+}
+form{
+    width: 100%;
+    position: relative;
+    margin: 30px auto 0 auto;
+}
+.row{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    grid-gap: 20px 30px;
+    margin-bottom: 20px;
+}
+/* .row input:is(:focus, :valid){
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+} */
+lable{
+    color: black;
+    font-size: 14px;
+}
+textarea,
+input{
+    width: 100%;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1.2px solid #c4cae0;
+    margin-top: 5px;
+}
+textarea{
+    resize: none;
+
+}
+textarea:focus,
+input:focus{
+    outline: none;
+    border-color: #002f66;
+    
+}
+button{
+    width: 150px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 5px;
+    border-radius: 25px;
+    font-weight: bold;
+    background: transparent;
+    color: white;
+    background-color: #1b1b1b;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+}
+.gender-title{
+    
+    font-size: 16px;
+    position: relative;
+    border-bottom: 1px solid;
+    
+    
+}
+.gender-category{
+    padding: 10px 0px;
+    color: #1b1b1b;
+    display: flex;
+    position: fixed;
+    
+
+}
+.gender-category lable{
+    padding: 0 5px 0 20px;
+    font-size: 14px;
+
+    
+}
+.gender-category lable, .gender-category input{
+    cursor: pointer;
+
+}
